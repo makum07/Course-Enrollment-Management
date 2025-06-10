@@ -1,5 +1,6 @@
 package com.example.courseenroll.controller;
 
+import com.example.courseenroll.dto.CourseDto;
 import com.example.courseenroll.dto.StudentDto;
 import com.example.courseenroll.entity.Student;
 import com.example.courseenroll.mapper.StudentMapper;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.courseenroll.service.custom.student.StudentService;
 
 import java.util.List;
 
@@ -20,12 +22,12 @@ public class StudentController {
     private final BaseService<StudentDto, Long> dynamicService;
 
     // For future use:
-    // private final StudentService studentService;
+     private final StudentService studentService;
 
     @Autowired
-    public StudentController(StudentRepository studentRepository, StudentMapper studentMapper /*, StudentService studentService */) {
+    public StudentController(StudentRepository studentRepository, StudentMapper studentMapper , StudentService studentService ) {
         this.dynamicService = new DynamicServiceImpl<Student, StudentDto, Long>(studentRepository, studentMapper);
-        // this.studentService = studentService;
+         this.studentService = studentService;
     }
 
 
@@ -58,5 +60,12 @@ public class StudentController {
         dynamicService.delete(id);
         // studentService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // 🔹 Get courses for student
+    @GetMapping("/{studentId}/courses")
+    public ResponseEntity<List<CourseDto>> getCoursesForStudent(@PathVariable Long studentId) {
+        List<CourseDto> dtos = studentService.getCoursesForStudent(studentId);
+        return ResponseEntity.ok(dtos);
     }
 }

@@ -5,18 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseDto {
+public class ReviewDto {
     private Long id;
-    private String title;
-    private String description;
+    private String comment;
+    private Integer rating;
 
-    private Long categoryId;
-    private Set<Long> enrolledStudentIds;
-    private List<Long> reviewIds;
+    private Long studentId;
+    private Long courseId;
+
+//    private List<Long> courseIds;
 }
-
